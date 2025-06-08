@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Manager</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Time Manager</h1>
+        </header>
+
+        <main>
+            <section class="activity-form">
+                <h2>Add New Activity</h2>
+                <form id="activityForm">
+                    <div class="form-group">
+                        <label for="name">Activity Name:</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="type">Activity Type:</label>
+                        <select id="type" name="type" required>
+                            <option value="work">Work</option>
+                            <option value="rest">Rest</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group time-range">
+                        <div>
+                            <label for="startTime">Start Time:</label>
+                            <input type="time" id="startTime" name="startTime" required>
+                        </div>
+                        <div>
+                            <label for="endTime">End Time:</label>
+                            <input type="time" id="endTime" name="endTime" required>
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <label for="importance">Importance (1-5):</label>
+                        <input type="number" id="importance" name="importance" min="1" max="5" required>
+                    </div>
+
+                    <button type="submit">Add Activity</button>
+                    <button type="button" id="exportBtn">Export plan</button>
+                </form>
+            </section>
+
+            <section class="schedule-view">
+                <h2>Daily Schedule</h2>
+                <div class="timeline" id="timeline"></div>
+                <div class="activity-list" id="activityList"></div>
+            </section>
+
+            <section class="validation-results">
+                <h2>Validation Results</h2>
+                <div class="results" id="validationResults">
+                    <div id="conflicts"></div>
+                    <div id="restWarnings"></div>
+                    <div id="duplicates"></div>
+                    <div id="suggestions"></div>
+                </div>
+            </section>
+
+            <section class="statistics">
+                <h2>Daily Statistics</h2>
+                <div id="statistics"></div>
+            </section>
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html> 
