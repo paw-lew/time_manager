@@ -1,5 +1,5 @@
-% Aktywności zapisywane w formacie:
 % activity(Id, Name, Type, StartTime, Duration, Importance).
+
 
 % Główna walidacja
 validate_schedule :-
@@ -9,6 +9,7 @@ validate_schedule :-
     check_rest_time(Activities),
     check_similar_names(Activities),
     suggest_improvements(Activities).
+
 
 % Wyświetlanie aktywności - pomocnicza
 print_activities([]).

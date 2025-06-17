@@ -125,7 +125,6 @@ function displayValidationResults(results) {
 // Aktualizuje cały interfejs
 function updateUI() {
     updateActivityList();
-    updateTimeline();
     updateStatistics();
 }
 
@@ -170,29 +169,6 @@ function updateActivityList() {
             const id = parseInt(btn.dataset.id);
             editActivity(id);
         });
-    });
-}
-
-// Aktuallizuje oś czasu aktywności
-function updateTimeline() {
-    const timeline = document.getElementById('timeline');
-    timeline.innerHTML = '';
-
-    const timelineWidth = timeline.clientWidth;
-    const dayMinutes = 24 * 60;
-
-    activities.forEach(activity => {
-        const item = document.createElement('div');
-        item.className = `timeline-item ${activity.type}`;
-
-        const left = (activity.startTime / dayMinutes) * 100;
-        const width = (activity.duration / dayMinutes) * 100;
-
-        item.style.left = `${left}%`;
-        item.style.width = `${width}%`;
-        item.title = `${activity.name} (${minutesToTime(activity.startTime)} - ${minutesToTime(activity.startTime + activity.duration)})`;
-
-        timeline.appendChild(item);
     });
 }
 
@@ -271,7 +247,6 @@ function exportScheduleAsText() {
 // Usuwa aktywność (ID)
 function deleteActivity(id) {
     activities = activities.filter(a => a.id !== id);
-    localStorage.setItem('activities', JSON.stringify(activities));
     updateUI();
 }
 
@@ -292,7 +267,6 @@ function editActivity(id) {
 function main() {
     initializeEventListeners();
     addExportListener();
-    // Możesz dodać tu ładowanie z localStorage jeśli chcesz
 }
 
 main();

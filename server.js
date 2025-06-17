@@ -1,9 +1,9 @@
-const express = require('express');
-const cors = require('cors');
+const express = require('express'); // serce
+const cors = require('cors'); //połaczenie z serverem
 const bodyParser = require('body-parser');
 const path = require('path');
-const { exec } = require('child_process');
-const fs = require('fs').promises;
+const { exec } = require('child_process'); //komnedy systemowe
+const fs = require('fs').promises; //await
 const util = require('util');
 const execPromise = util.promisify(exec);
 
@@ -14,7 +14,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
-// Route to handle schedule validation
+
 app.post('/validate-schedule', async (req, res) => {
     try {
         const schedule = req.body;
@@ -24,36 +24,27 @@ app.post('/validate-schedule', async (req, res) => {
             return res.status(400).json({ error: 'Invalid schedule format' });
         }
 
-        // Convert schedule to Prolog facts
         const prologFacts = generatePrologFacts(schedule);
         console.log('Generated Prolog facts:', prologFacts);
         
-        // Read the validator rules
         const validatorContent = await fs.readFile('validator.pl', 'utf8');
         
-        // Combine validator rules with facts and query
         const combinedContent = `
 ${validatorContent}
-
-% Schedule facts
 ${prologFacts}
 
-% Query to run
 :- (validate_schedule, halt(0)) ; halt(1).
 `;
 
-        // Write combined content to temporary file
         const tempFile = 'temp_schedule.pl';
         await fs.writeFile(tempFile, combinedContent);
         console.log('Created temporary Prolog file');
 
         try {
-            // Execute Prolog validation
             const { stdout, stderr } = await execPromise('swipl -q -s temp_schedule.pl');
             console.log('Prolog stdout:', stdout);
             if (stderr) console.error('Prolog stderr:', stderr);
 
-            // Parse and send validation results
             const results = parsePrologOutput(stdout);
             console.log('Parsed validation results:', results);
             res.json(results);
@@ -69,7 +60,6 @@ ${prologFacts}
                 stderr: error.stderr
             });
         } finally {
-            // Clean up temporary file
             try {
                 await fs.unlink(tempFile);
             } catch (e) {
@@ -85,7 +75,6 @@ ${prologFacts}
 function generatePrologFacts(schedule) {
     let facts = '';
     schedule.activities.forEach((activity, index) => {
-        // Sanitize strings to handle special characters in Prolog
         const sanitizedName = activity.name.replace(/'/g, "\\'");
         facts += `activity(${index}, '${sanitizedName}', '${activity.type}', ${activity.startTime}, ${activity.duration}, ${activity.importance}).\n`;
     });
@@ -101,7 +90,6 @@ function parsePrologOutput(output) {
         suggestions: []
     };
     
-    // Split output by lines and parse each validation result
     const lines = output.split('\n');
     console.log('Parsing Prolog output lines:', lines);
     

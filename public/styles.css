@@ -83,6 +83,7 @@ button:hover {
     min-height: 100px;
 }
 
+
 .activity-list {
     display: flex;
     flex-direction: column;
